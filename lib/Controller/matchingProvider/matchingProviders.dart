@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/service/utils/dio_service.dart';
 import 'package:dio/dio.dart';
 
+//dto 클래스 선언하고 json파싱하는 함수 만들어주세요
 class travelDataDTO{
   final String startDate;
   final String endDate;
@@ -51,17 +52,15 @@ class travelDataDTO{
 }
 
 
-
+// 이부분은 provider(리버팟) 컨트롤러 입니다. 여기서 함수로 api 불러와서, state에 저장하면 됩니다. state는 내장이라 선언안해도 자동 생성
 class travelListController extends StateNotifier<List<travelDataDTO>>{
   travelListController() : super([]);
 
-  Future<void> getMainAPI() async {
+  Future<void> getMainAPI(String value) async {
+    // DioServices().to()를 통해 Dio를 사용할 수 있습니다. 싱글톤이니까 임포트해서 쓰세요.
     Dio _dio = DioServices().to();
 
-
-
-    final response = await _dio.get('/match-posting/',
-
+    final response = await _dio.get('/match-posting/search/${value}',
     );
 
 
@@ -71,13 +70,14 @@ class travelListController extends StateNotifier<List<travelDataDTO>>{
       final List<dynamic> travelListJson = response.data;
       List<travelDataDTO> travelList = travelListJson.map((item) => travelDataDTO.fromTravelData(item)).toList();
       state = travelList;
-      
+
     }
     else {
     }
   }
 }
 
+//여기 있는 프로바이더로 나중에 api를 불러오고 상태를 감시 가능합니다.
 final travelListProvider = StateNotifierProvider<travelListController, List<travelDataDTO>>((ref) {
   return travelListController();
 });
