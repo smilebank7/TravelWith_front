@@ -3,8 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/service/utils/dio_service.dart';
 import 'package:dio/dio.dart';
+import 'package:quickalert/quickalert.dart';
+
+import '/model/matchinginfo/NEW/MatchResponseDetail.dart';
 
 //dto 클래스 선언하고 json파싱하는 함수 만들어주세요
+/*
 class travelDataDTO{
   final String startDate;
   final String endDate;
@@ -50,34 +54,122 @@ class travelDataDTO{
     );
   }
 }
+*/
 
 
 // 이부분은 provider(리버팟) 컨트롤러 입니다. 여기서 함수로 api 불러와서, state에 저장하면 됩니다. state는 내장이라 선언안해도 자동 생성
-class travelListController extends StateNotifier<List<travelDataDTO>>{
+class travelListController extends StateNotifier<List<MatchResponseDetail>>{
   travelListController() : super([]);
 
-  Future<void> getMainAPI(String value) async {
+  Future<void> SearchAPI(String? value) async {
     // DioServices().to()를 통해 Dio를 사용할 수 있습니다. 싱글톤이니까 임포트해서 쓰세요.
     Dio _dio = DioServices().to();
 
-    final response = await _dio.get('/match-posting/search/${value}',
-    );
+    if (value == null) {
+      final response = await _dio.get('/match-posting/search',
+      );
+      if (response.statusCode == 200) {
+        print("성공해버린1..");
 
-
-    if (response.statusCode == 200) {
-      print("성공해버린..");
-
-      final List<dynamic> travelListJson = response.data;
-      List<travelDataDTO> travelList = travelListJson.map((item) => travelDataDTO.fromTravelData(item)).toList();
-      state = travelList;
-
+        final List<dynamic> travelListJson = response.data;
+        List<MatchResponseDetail> travelList = travelListJson.map((item) => MatchResponseDetail.fromJson(item)).toList();
+        state = travelList;
+      }
+      else {
+        print("실패해버린..");
+      }
     }
     else {
+      final response = await _dio.get('/match-posting/search/$value',
+      );
+      if (response.statusCode == 200) {
+        print("성공해버린2..");
+
+        final List<dynamic> travelListJson = response.data;
+        List<MatchResponseDetail> travelList = travelListJson.map((item) => MatchResponseDetail.fromJson(item)).toList();
+        state = travelList;
+      }
+      else {
+        print("실패해버린..");
+      }
+    }
+
+
+  }
+
+  Future<void> ConditionAPI(String? startDate, String? endDate, int money) async {
+    Dio _dio = DioServices().to();
+
+    final response = await _dio.get('/match-posting/search-condition',
+        queryParameters: {
+          'startDate': startDate,
+          'endDate': endDate,
+          'money': money,
+        }
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> travelListJson = response.data;
+      List<MatchResponseDetail> travelList = travelListJson.map((item) => MatchResponseDetail.fromJson(item)).toList();
+      state = travelList;
+    }
+    else {
+      print("실패해버린..");
     }
   }
 }
 
 //여기 있는 프로바이더로 나중에 api를 불러오고 상태를 감시 가능합니다.
-final travelListProvider = StateNotifierProvider<travelListController, List<travelDataDTO>>((ref) {
+final travelListProvider = StateNotifierProvider<travelListController, List<MatchResponseDetail>>((ref) {
   return travelListController();
 });
+
+
+class progressListController extends StateNotifier<List<MatchResponseDetail>>{
+  progressListController() : super([]);
+
+  Future<void> ProgressAPI() async {
+    Dio _dio = DioServices().to();
+
+    final response = await _dio.get('/match-posting/progress-match',
+    );
+    if (response.statusCode == 200) {
+      print("성공해버린3..");
+
+      final List<dynamic> travelListJson = response.data;
+      List<MatchResponseDetail> travelList = travelListJson.map((item) => MatchResponseDetail.fromJson(item)).toList();
+      state = travelList;
+      print("state");
+    }
+    else {
+      print("실패해버린3..");
+    }
+  }
+
+}
+
+final progressListProvider = StateNotifierProvider<progressListController, List<MatchResponseDetail>>((ref) {
+  return progressListController();
+});
+
+Future<void> joinAPI(int id, BuildContext context) async {
+  Dio _dio = DioServices().to();
+
+  final response = await _dio.post('/match-posting/join/$id',
+  );
+  if (response.statusCode == 200) {
+    QuickAlert.show(
+      context: context,
+      title: '참여 완료',
+      type: QuickAlertType.success,
+      confirmBtnColor: Colors.pink,
+    );
+  }
+  else {
+    QuickAlert.show(
+      context: context,
+      title: '참여 실패',
+      type: QuickAlertType.error,
+      confirmBtnColor: Colors.pink,
+    );
+  }
+}

@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'travelList.dart';
-import 'createdList.dart';
-import 'joinnedList.dart';
+import 'search/travelList.dart';
+import 'create/createdList.dart';
+import 'progress/joinnedList.dart';
+
+
 
 class Matching extends ConsumerStatefulWidget {
   const Matching({Key? key}) : super(key: key);
@@ -79,57 +81,13 @@ class _MatchingState extends ConsumerState<Matching>
         controller: controller,
         children: [
           TravelList(),
-          JoinnedList(),
-          JoinnedList(),
+          ProgressList(),
+          Container(),
         ],
       ),
     );
   }
 }
 
-
-
-class JoinnedList extends ConsumerStatefulWidget {
-  const JoinnedList({Key? key}) : super(key: key);
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _JoinnedListState();
-}
-class _JoinnedListState extends ConsumerState<JoinnedList> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
-            alignment: Alignment.centerLeft,
-            child: Column(
-                children: [ /*
-                  Container(
-                    height: 500,
-                    child: ListView.builder(
-                      itemCount: projectList.length,
-                      itemBuilder: (content, index) {
-                        ProjectCardData cardData = projectList[index];
-                        return CustomCard(
-                          courseName: cardData.courseName,
-                          teamName: cardData.teamName,
-                        );
-                      },
-                    ),
-                  ),
-*/
-                ]
-            ),
-          ),
-        ]
-    );
-  }
-}
 
 

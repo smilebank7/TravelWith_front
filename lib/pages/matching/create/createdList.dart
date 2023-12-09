@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:tripmating/model/matchinginfo/NEW/MatchResponseDetail.dart';
+
+import '/Controller/matchingProvider/matchingProviders.dart';
 
 
-
-
-class TravelList extends ConsumerStatefulWidget {
-  const TravelList({Key? key}) : super(key: key);
+class CreatedList extends ConsumerStatefulWidget {
+  const CreatedList({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TravelListState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CreatedListState();
 }
-class _TravelListState extends ConsumerState<TravelList> {
+class _CreatedListState extends ConsumerState<CreatedList> {
   @override
   void initState() {
     super.initState();
+    ref.read(progressListProvider.notifier).ProgressAPI();
   }
 
   @override
   Widget build(BuildContext context) {
+    final progressListState = ref.watch(progressListProvider);
     return Column(
         children: [
           Container(
@@ -60,9 +63,9 @@ class _TravelListState extends ConsumerState<TravelList> {
                   Container(
                     height: 500,
                     child: ListView.builder(
-                      itemCount: travelDataList.length,
+                      itemCount: progressListState.length,
                       itemBuilder: (content, index) {
-                        TravelData travelData = travelDataList[index];
+                        MatchResponseDetail travelData = progressListState[index];
                         return TravelCard(
                           data: travelData,
                         );
@@ -77,44 +80,8 @@ class _TravelListState extends ConsumerState<TravelList> {
   }
 }
 
-class TravelData {
-  String title;
-  String date;
-  String place;
-  String user;
-
-  TravelData({
-    required this.title,
-    required this.date,
-    required this.place,
-    required this.user,
-  });
-}
-
-final List<TravelData> travelDataList = [
-  TravelData(
-    title: 'Trip to Paris',
-    date: '2023-05-15',
-    place: 'Paris, France',
-    user: '홍길동',
-  ),
-  TravelData(
-    title: 'Beach Vacation',
-    date: '2023-07-20',
-    place: 'Maldives',
-    user: '윤석열',
-  ),
-  TravelData(
-    title: '중앙대 청룡탕 가실 분',
-    date: '2023-07-20',
-    place: '중앙대학교',
-    user: '이재명',
-  ),
-  // Add more TravelData objects here
-];
-
 class TravelCard extends ConsumerStatefulWidget {
-  final TravelData data;
+  final MatchResponseDetail data;
 
   TravelCard({required this.data});
 
@@ -134,15 +101,14 @@ class _TravelCardState extends ConsumerState<TravelCard> {
                 height: 300,
                 child: Column(
                   children: [
-                    Text('여행 제목 : ${widget.data.title}'),
-                    Text('여행 장소 : ${widget.data.place}'),
-                    Text('여행 날짜 : ${widget.data.date}'),
-                    Text('여행 참여자 : ${widget.data.user}'),
+                    Text('여행 제목 : ${widget.data.title!}'),
+                    Text('여행 장소 : ${widget.data.mainTravelSpace!}'),
+                    Text('여행 날짜 : ${widget.data.startDate!} ~ ${widget.data.endDate!}'),
+                    Text('여행 참여자 : ${widget.data.participants!}'),
                     ElevatedButton(
-                      onPressed: (){
-                        context.go('/matching');
-                      },
-                      child: Text('매칭하기')
+                        onPressed: (){
+                        },
+                        child: Text('매칭하기')
                     )
                   ],
                 ),
@@ -166,16 +132,16 @@ class _TravelCardState extends ConsumerState<TravelCard> {
               ),
               SizedBox(height: 10),
               Text(
-                '${widget.data.place}',
+                '${widget.data.mainTravelSpace!}',
                 style: TextStyle(fontSize: 18,color: Colors.pink, fontWeight: FontWeight.w600),
               ),
               Text(
-                '${widget.data.date}',
+                '${widget.data.startDate!}',
                 style: TextStyle(fontSize: 16),
               ),
-      
+
               Text(
-                '${widget.data.user}',
+                '${widget.data.participants!}',
                 style: TextStyle(fontSize: 16),
               ),
             ],

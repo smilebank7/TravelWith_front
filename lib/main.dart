@@ -5,7 +5,7 @@ import 'package:tripmating/pages/home/home.dart';
 
 import 'package:tripmating/pages/login/signup.dart';
 import 'pages/login/loginpage.dart';
-import 'pages/matching/postingpage.dart';
+import 'pages/matching/create/postingpage.dart';
 
 
 import 'package:go_router/go_router.dart';
