@@ -32,9 +32,9 @@ class PostingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
             color: Colors.white,
@@ -48,7 +48,7 @@ class PostingPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(onPressed: (){
+                    ElevatedButton(onPressed: ()  {
                       PostingAPI(context, matchingInfo.startDate.toString().substring(0,10), matchingInfo.endDate.toString().substring(0,10), _titleController.text, _contentController.text, _expenseController.text, matchingInfo.numOfPeoples, matchingInfo.isAccommodationTogether, matchingInfo.isDiningTogether, _mainTravelSpaceController.text);
                       }, child: const Text("Posting")),
                   ],
@@ -293,7 +293,7 @@ class _CheckPanelState extends State<CheckPanel> {
   }
 }
 
-void PostingAPI(BuildContext context, StartDate, String EndDate, String Title, String Contents, String TravelExpenses, int NumOfPeoples, bool IsAccommodationTogether, bool IsDiningTogether, String MainTravelSpace) async{
+Future<void> PostingAPI(BuildContext context, StartDate, String EndDate, String Title, String Contents, String TravelExpenses, int NumOfPeoples, bool IsAccommodationTogether, bool IsDiningTogether, String MainTravelSpace) async{
 
   Dio _dio = DioServices().to();
 
