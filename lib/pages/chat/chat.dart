@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Chat extends StatelessWidget {
+
+import '/Controller/messageProvider/messageProviders.dart';
+import '/model/messages/MessagePreview.dart';
+import '/model/messages/Message.dart';
+
+
+class Chat extends ConsumerStatefulWidget {
   const Chat({super.key});
 
   @override
+  ConsumerState<Chat> createState() => _ChatState();
+}
+
+class _ChatState extends ConsumerState<Chat> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(messageProvider.notifier).getMessageList();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final messageList = ref.watch(messageProvider);
     return SafeArea(
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: messageList.length,
         padding: EdgeInsets.only(top: 8),
         itemBuilder: (context, index) {
+          MessagePreview data = messageList[index];
+          print(data);
           return SizedBox(
             height: 85,
             child: TextButton(
               onPressed: () {
-                context.push("/chat/chatroom");
+                context.go('/chat/chatroom', extra: data);
               },
               style: TextButton.styleFrom(
                 primary: Colors.black,
@@ -33,19 +54,19 @@ class Chat extends StatelessWidget {
                         width: 2,
                       ),
                     ),
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 30,
-                      backgroundImage: AssetImage("assets/loginPageImage0.png"),
+                      backgroundImage: NetworkImage(data.memberInfoDTO.profileImg),
                     ),
                   ),
                   const SizedBox(width: 15),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "name",
+                          data.memberInfoDTO.name,
                           style: TextStyle(
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w500,
@@ -54,7 +75,7 @@ class Chat extends StatelessWidget {
                         ),
                         SizedBox(height: 6),
                         Text(
-                          "text1111111111111111111111111111111111111",
+                          data.contents,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             color : Color(0xFF757575),
@@ -66,8 +87,8 @@ class Chat extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 15),
-                  const Text(
-                    "date",
+                   Text(
+                    data.recentDate.toString().substring(0,10),
                     style: TextStyle(
                       color : Color(0xFF757575),
                       fontFamily: 'Pretendard',
@@ -85,34 +106,50 @@ class Chat extends StatelessWidget {
   }
 }
 
-class ChatRoom extends StatefulWidget {
-  const ChatRoom({super.key});
+class ChatRoom extends ConsumerStatefulWidget {
+  final MessagePreview data;
+
+  ChatRoom({required this.data});
 
   @override
-  State<ChatRoom> createState() => _ChatRoomState();
+  ConsumerState<ChatRoom> createState() => _ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
-  ChatUser user = ChatUser(
-    id: '1',
-    firstName: 'Charles',
-    lastName: 'Leclerc',
-  );
+class _ChatRoomState extends ConsumerState<ChatRoom> {
 
   List<ChatMessage> messages = <ChatMessage>[
-    ChatMessage(
-      text: 'Hey!',
-      user: ChatUser(
-        id: '2',
-        firstName: "park",
-        // profileImage: AssetImage("/assets/loginPageImage0.jpg")
-      ),
-      createdAt: DateTime.now(),
-    ),
   ];
+  
+  @override
+  void initState() {
+    super.initState();
+    ref.read(messageDetailProvider.notifier).getMessageDetail(widget.data.memberInfoDTO.email);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final messageDetail = ref.watch(messageDetailProvider);
+
+    ChatUser userMe = ChatUser(
+      id: 'abc1234@test1.com',
+      firstName: '나',
+    );
+
+    ChatUser userYou = ChatUser(
+      id: widget.data.memberInfoDTO.email,
+      firstName: widget.data.memberInfoDTO.name,
+    );
+
+    //make message list in time orderable
+    for (Message message in messageDetail) {
+      messages.add(ChatMessage(
+        text: message.contents,
+        user: userYou,
+        createdAt: message.sendTime,
+      ));
+    }
+
+
     return Scaffold(
       appBar: PreferredSize(preferredSize: const Size.fromHeight(50), child: AppBar(
 
@@ -120,10 +157,9 @@ class _ChatRoomState extends State<ChatRoom> {
       body: SafeArea(
         child:
         DashChat(
-          currentUser: user,
+          currentUser: userMe,
           onSend: (ChatMessage m) {
             setState(() {
-              messages.insert(0, m);
             });
           },
           messages: messages,
@@ -133,90 +169,4 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 }
 
-//
-// class ChatRoom extends StatefulWidget {
-//   const ChatRoom({super.key});
-//
-//   @override
-//   State<ChatRoom> createState() => _ChatRoomState();
-// }
-//
-// class _ChatRoomState extends State<ChatRoom> {
-//   final scrollController = ScrollController();
-//   String text = "";
-//
-//   //송신자, 수신자 색깔 차이
-//   Widget createMessage(isMine, text){
-//     Color chatColor;
-//     TextAlign textAlign;
-//
-//     if(isMine){
-//       chatColor = Colors.yellow;
-//       textAlign = TextAlign.right;
-//     }
-//     else{
-//       chatColor = Colors.lightGreen;
-//       textAlign = TextAlign.left;
-//     }
-//     return SizedBox(
-//       width: 100,
-//       height: 50,
-//       child: Padding(
-//         padding: const EdgeInsets.all(7.0),
-//         child: Container(
-//           color: chatColor,
-//           child: Text(text.toString(), textAlign: textAlign)
-//         ),
-//       ),
-//     );
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-//       scrollController.jumpTo(scrollController.position.maxScrollExtent);
-//     });
-//
-//     return SafeArea(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           SizedBox(
-//             width: 200,
-//             height: 450,
-//             child: ListView.builder(
-//               controller: scrollController,
-//               itemCount: 15,// 맥스 값 필요
-//               itemBuilder: (context, index){
-//                 if(index < 5){
-//                   return createMessage(true, index);
-//                 }
-//                 else{
-//                   return createMessage(false, index);
-//                 }
-//               },
-//             ),
-//           ),
-//           const SizedBox(height: 30),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.end,
-//             children: [
-//               SizedBox(
-//                 width: 200,
-//                 height: 30,
-//                 child: TextField(
-//                   onChanged: (value){
-//                     setState(() {
-//                       text = value;
-//                     });
-//                   },
-//                 ),
-//               ),
-//               IconButton(onPressed: (){}, icon: const Icon(Icons.message))
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-//
+

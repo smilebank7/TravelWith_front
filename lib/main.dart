@@ -19,6 +19,10 @@ import 'pages/mypage/memberassessment.dart';
 import 'pages/chat/chat.dart';
 import 'pages/home/home2.dart';
 
+import '/model/messages/MessagePreview.dart';
+import '/model/messages/Message.dart';
+
+
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -159,7 +163,7 @@ final GoRouter _router = GoRouter(initialLocation: '/', routes: <RouteBase>[
                     GoRoute(
                       path: 'chatroom',
                       builder: (context, state) {
-                        return const ChatRoom();
+                        return ChatRoom(data: state.extra as MessagePreview);
                       },
                     ),
                   ],

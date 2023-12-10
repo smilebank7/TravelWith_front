@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'search/travelList.dart';
 import 'create/createdList.dart';
 import 'progress/joinnedList.dart';
+import 'create/postingpage.dart';
 
 
 
@@ -82,7 +83,7 @@ class _MatchingState extends ConsumerState<Matching>
         children: [
           TravelList(),
           ProgressList(),
-          Container(),
+          PostingPage()
         ],
       ),
     );

@@ -181,28 +181,6 @@ class _Home2State extends ConsumerState<Home2> {
         SizedBox(
           height: 200,
         ),
-        Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0), // 테두리 라운드 처리
-              border: Border.all(
-                color: Colors.pink, // 테두리 색상
-                width: 2, // 테두리 두께
-              ),
-
-
-            ),
-            width: double.infinity,
-            height: 300,
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return CustomCard();
-              },
-            ),
-          ),
-        )
       ],
     );
   }
