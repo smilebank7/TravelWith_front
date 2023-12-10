@@ -35,7 +35,7 @@ class _MatchingState extends ConsumerState<Matching>
     final List<Tab> myTabs = <Tab>[
       Tab(
         child: Text(
-          '여행 목록',
+          'Trip List',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -44,7 +44,7 @@ class _MatchingState extends ConsumerState<Matching>
       ),
       Tab(
         child: Text(
-          '참여한 여행',
+          'Trip Progress',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -53,7 +53,7 @@ class _MatchingState extends ConsumerState<Matching>
       ),
       Tab(
         child: Text(
-          '생성한 여행',
+          'Create Trip',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,

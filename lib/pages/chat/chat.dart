@@ -136,6 +136,8 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
       firstName: widget.data.memberInfoDTO.name,
     );
     ref.read(messageDetailProvider.notifier).getMessageDetail(widget.data.memberInfoDTO.email, userMe, userYou);
+    ref.read(messageProvider.notifier).getMessageList();
+
   }
 
   @override
