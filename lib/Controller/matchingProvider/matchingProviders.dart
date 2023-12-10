@@ -97,14 +97,15 @@ class travelListController extends StateNotifier<List<MatchResponseDetail>>{
 
   }
 
-  Future<void> ConditionAPI(String? startDate, String? endDate, int money, BuildContext context) async {
+  Future<void> ConditionAPI(String? startDate, String? endDate, int money,String? value, BuildContext context) async {
     Dio _dio = DioServices().to();
 
     final response = await _dio.get('/match-posting/search-condition',
         queryParameters: {
-          'startDate': startDate,
-          'endDate': endDate,
-          'money': money,
+          'startDate': startDate=='' ? null : startDate,
+          'endDate': endDate=='' ? null : endDate,
+          'money': money=='' ? null : money,
+          'query': value=='' ? null : value,
         }
     );
     if (response.statusCode == 200) {

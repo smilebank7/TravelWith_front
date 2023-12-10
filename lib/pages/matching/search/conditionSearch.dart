@@ -88,6 +88,7 @@ class _ConditionSearchState extends ConsumerState<ConditionSearch> {
                   startDateController.text,
                   endDateController.text,
                   maxAmount.toInt(),
+                  keywordController.text,
                   context,
                 );
                 context.pop();
