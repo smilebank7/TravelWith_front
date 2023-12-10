@@ -104,7 +104,7 @@ void _showAddressDialog(BuildContext context, String address) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("도로명 주소"),
+        title: Text("Road Name Address"),
         content: Text(address),
         actions: <Widget>[
 
