@@ -76,148 +76,152 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(preferredSize: const Size.fromHeight(50), child: AppBar(
-        title: const Text("Sign Up"),
-      ),),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-              //email, password, name, phoneNumber, profileImg, birthDate, gender
-              children: [
-                Stack(
-                  alignment: Alignment.bottomRight,
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(preferredSize: const Size.fromHeight(50), child: AppBar(
+          title: const Text("Sign Up"),
+        ),),
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  //email, password, name, phoneNumber, profileImg, birthDate, gender
                   children: [
-                    avatar,
-                    IconButton(onPressed: (){ remakeRandomAvatar(); }, icon: const Icon(Icons.refresh))
-                  ],
-                ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "email",
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        avatar,
+                        IconButton(onPressed: (){ remakeRandomAvatar(); }, icon: const Icon(Icons.refresh))
+                      ],
                     ),
-                    controller: _emailController,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "password",
-                    ),
-                    controller: _passwordController,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "name",
-                    ),
-                    controller: _nameController,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "phone number",
-                    ),
-                    controller: _phoneNumberController,
-                    keyboardType: TextInputType.phone,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "birthDate(ex.2000-01-01})",
-                    ),
-                    controller: _birthDateController,
-                    keyboardType: TextInputType.datetime,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                    const SizedBox(height: 30),
                     SizedBox(
-                      width: 140,
-                      height: 30,
-                      child: RadioListTile(
-                        title: const Text("Male"),
-                        value: Gender.male,
-                        groupValue: gender,
-                        onChanged: (value) {
-                          setState(() {
-                            gender = value!;
-                          });
-                        },
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "email",
+                        ),
+                        controller: _emailController,
                       ),
                     ),
+                    const SizedBox(height: 10),
                     SizedBox(
-                      width: 160,
-                      height: 30,
-                      child: RadioListTile(
-                        title: const Text("Female"),
-                        value: Gender.female,
-                        groupValue: gender,
-                        onChanged: (value) {
-                          setState(() {
-                            gender = value!;
-                          });
-                        },
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "password",
+                        ),
+                        controller: _passwordController,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          LoginService.signUp(SignupDTO(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            name: _nameController.text,
-                            phoneNumber: _phoneNumberController.text,
-                            profileImg: avatarKey,
-                            birthDate: DateTime.parse(_birthDateController.text),
-                            gender: gender == Gender.male ? "MALE" : "FEMALE",
-                          ));
-                          //post
-                          context.go("/login");
-                        },
-                        child: Text("sign up")),
-                    ElevatedButton(
-                        onPressed: () {
-                          context.go("/login");
-                        },
-                        child: Text("cancel")),
-                  ],
-                ),
-              ]),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "name",
+                        ),
+                        controller: _nameController,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "phone number",
+                        ),
+                        controller: _phoneNumberController,
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "birthDate(ex.2000-01-01})",
+                        ),
+                        controller: _birthDateController,
+                        keyboardType: TextInputType.datetime,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 140,
+                          height: 30,
+                          child: RadioListTile(
+                            title: const Text("Male"),
+                            value: Gender.male,
+                            groupValue: gender,
+                            onChanged: (value) {
+                              setState(() {
+                                gender = value!;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 160,
+                          height: 30,
+                          child: RadioListTile(
+                            title: const Text("Female"),
+                            value: Gender.female,
+                            groupValue: gender,
+                            onChanged: (value) {
+                              setState(() {
+                                gender = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              LoginService.signUp(SignupDTO(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                name: _nameController.text,
+                                phoneNumber: _phoneNumberController.text,
+                                profileImg: avatarKey,
+                                birthDate: DateTime.parse(_birthDateController.text),
+                                gender: gender == Gender.male ? "MALE" : "FEMALE",
+                              ));
+                              //post
+                              context.go("/login");
+                            },
+                            child: Text("sign up")),
+                        ElevatedButton(
+                            onPressed: () {
+                              context.go("/login");
+                            },
+                            child: Text("cancel")),
+                      ],
+                    ),
+                  ]),
+            ),
+          ),
         ),
       ),
     );
