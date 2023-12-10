@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:dio/dio.dart';
+import '/service/utils/dio_service.dart';
+
+import 'package:quickalert/quickalert.dart';
+
+final _mainTravelSpaceController = TextEditingController();
+final _titleController = TextEditingController();
+final _contentController = TextEditingController();
+final _expenseController = TextEditingController();
+
+
 class MatchingInfo {
   DateTime? startDate = DateTime.now();
   DateTime? endDate = DateTime.now();
@@ -21,39 +32,30 @@ class PostingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 400,
-              height: 500,
-              color: Colors.blue.shade50,
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const DatePanel(),
-                  const TitlePanel(),
-                  const CheckPanel(),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(onPressed: (){
-                        //post
-                        context.go("/matching");
+      body: Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: double.infinity,
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                const DatePanel(),
+                const TitlePanel(),
+                const CheckPanel(),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(onPressed: (){
+                      PostingAPI(context, matchingInfo.startDate.toString().substring(0,10), matchingInfo.endDate.toString().substring(0,10), _titleController.text, _contentController.text, _expenseController.text, matchingInfo.numOfPeoples, matchingInfo.isAccommodationTogether, matchingInfo.isDiningTogether, _mainTravelSpaceController.text);
                       }, child: const Text("Posting")),
-                      ElevatedButton(onPressed: (){
-                        context.go("/matching");
-                      }, child: const Text("Cancel"))
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+                  ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -68,7 +70,6 @@ class DatePanel extends StatefulWidget {
 }
 
 class _DatePanelState extends State<DatePanel> {
-  final _mainTravelSpaceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,15 +120,17 @@ class _DatePanelState extends State<DatePanel> {
                 child: Text(matchingInfo.endDate.toString().substring(0,10))
               ),
               const SizedBox(width: 10),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 15,
-                    child: Icon(Icons.person),
-                  ),
-                  SizedBox(
-                    width: 40,
-                    child:(
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 15,
+                child: Icon(Icons.person),
+              ),
+              SizedBox(
+                  width: 40,
+                  child:(
                       IconButton(onPressed: () {
                         setState(() {
                           if(matchingInfo.numOfPeoples > 0) {
@@ -135,27 +138,26 @@ class _DatePanelState extends State<DatePanel> {
                           }
                         });
                       }, icon: const Icon(Icons.remove))
-                    )
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 20,
-                    height: 25,
-                    color: Colors.blue.shade100,
-                    child: Text(matchingInfo.numOfPeoples.toString())
-                  ),
-                  SizedBox(
-                    width: 40,
-                    child:IconButton(onPressed: (){
-                      setState(() {
-                        matchingInfo.numOfPeoples++;
-                      });
-                    }, icon: const Icon(Icons.add))
-                  ),
-                ],
-              )
+                  )
+              ),
+              Container(
+                  alignment: Alignment.center,
+                  width: 20,
+                  height: 25,
+                  color: Colors.blue.shade100,
+                  child: Text(matchingInfo.numOfPeoples.toString())
+              ),
+              SizedBox(
+                  width: 40,
+                  child:IconButton(onPressed: (){
+                    setState(() {
+                      matchingInfo.numOfPeoples++;
+                    });
+                  }, icon: const Icon(Icons.add))
+              ),
             ],
-          ),
+          )
+
         ],
       ),
     );
@@ -170,17 +172,6 @@ class TitlePanel extends StatefulWidget {
 }
 
 class _TitlePanelState extends State<TitlePanel> {
-  final _titleController = TextEditingController();
-  final _contentController = TextEditingController();
-  final _expenseController = TextEditingController();
-
-  @override
-  void dispose(){
-    _titleController.dispose();
-    _contentController.dispose();
-    _expenseController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +255,7 @@ class _CheckPanelState extends State<CheckPanel> {
                 children:[
                   Icon(Icons.bed),
                   SizedBox(width: 10),
-                  Text("do you want accommodation together?")
+                  Text("Accommodation Together?")
                 ]
               )),
               Checkbox(
@@ -283,7 +274,7 @@ class _CheckPanelState extends State<CheckPanel> {
                   children:[
                     Icon(Icons.brunch_dining),
                     SizedBox(width: 10),
-                    Text("do you want dining together?"),
+                    Text("Dining Together?"),
                   ]
               )),
               Checkbox(
@@ -302,5 +293,41 @@ class _CheckPanelState extends State<CheckPanel> {
   }
 }
 
+void PostingAPI(BuildContext context, StartDate, String EndDate, String Title, String Contents, String TravelExpenses, int NumOfPeoples, bool IsAccommodationTogether, bool IsDiningTogether, String MainTravelSpace) async{
 
+  Dio _dio = DioServices().to();
 
+  final response = await _dio.post('/match-posting/write',
+      data: {
+        'startDate': StartDate,
+        'endDate': EndDate,
+        'title': Title,
+        'contents': Contents,
+        'travelExpenses': TravelExpenses,
+        'numOfPeoples': NumOfPeoples,
+        'isAccommodationTogether': IsAccommodationTogether,
+        'isDiningTogether': IsDiningTogether,
+         'mainTravelSpace': MainTravelSpace,
+      }
+  );
+
+  if (response.statusCode == 200) {
+    print("성공해버린..");
+    print(response.data);
+
+    QuickAlert.show(
+      context: context,
+      title: "Posting Success",
+      type: QuickAlertType.success,
+    );
+
+  } else {
+    print("실패해버린..");
+    print(response.data);
+  }
+}
+  //Posting API
+  //Posting API
+  //Posting API
+  //Posting API
+  //Posting
