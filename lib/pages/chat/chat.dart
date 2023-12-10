@@ -9,44 +9,72 @@ class Chat extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView.builder(
-        itemCount: 10,//값 필요
-        itemBuilder: (context, index){
+        itemCount: 10,
+        padding: EdgeInsets.only(top: 8),
+        itemBuilder: (context, index) {
           return SizedBox(
-            height: 100,
-            child: OutlinedButton(
-              onPressed: (){
+            height: 85,
+            child: TextButton(
+              onPressed: () {
                 context.push("/chat/chatroom");
               },
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              style: TextButton.styleFrom(
+                primary: Colors.black,
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              ),
+              child: Row(
                 children: [
-                  SizedBox(
-                      width: 70,
-                      height: 70,
-                      child: Image(image: AssetImage("assets/loginPageImage0.jpg"))
-                  ),
-                  SizedBox(width: 20),
-                  Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("name", textAlign: TextAlign.left),
-                          SizedBox(
-                            width: 200,
-                            child: Text("text1111111111111111111111111111111111111",
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis
-                            ),
-                            ),
-                          ),
-                        ],
+                  Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Color(0xFFF8BBD0),
+                        width: 2,
                       ),
-                      SizedBox(width: 10),
-                      Text("date")
-                    ],
+                    ),
+                    child: const CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage("assets/loginPageImage0.png"),
+                    ),
                   ),
+                  const SizedBox(width: 15),
+                  const Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "name",
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.5,
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          "text1111111111111111111111111111111111111",
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color : Color(0xFF757575),
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  const Text(
+                    "date",
+                    style: TextStyle(
+                      color : Color(0xFF757575),
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
                 ],
               ),
             ),
@@ -75,9 +103,9 @@ class _ChatRoomState extends State<ChatRoom> {
     ChatMessage(
       text: 'Hey!',
       user: ChatUser(
-          id: '2',
-          firstName: "park",
-          // profileImage: AssetImage("/assets/loginPageImage0.jpg")
+        id: '2',
+        firstName: "park",
+        // profileImage: AssetImage("/assets/loginPageImage0.jpg")
       ),
       createdAt: DateTime.now(),
     ),

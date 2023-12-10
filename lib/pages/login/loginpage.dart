@@ -54,57 +54,85 @@ class _LoginPanelState extends State<LoginPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 80),
-        child: Center(
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                  "Travel With",
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
-              const Image(
-                image: AssetImage("assets/loginPageImage0.jpg"),
-                width: 250,
-                height: 250,
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 300,
-                    height: 80,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Input ID',
-                      ),
-                      controller: _iDController,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 300,
-                    height: 80,
-                    child: TextField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'InputPassword',
-                      ),
-                      controller: _passwordController,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  ElevatedButton(
-                      onPressed: signUp, child: const Text("sign up")),
-                  ElevatedButton(
-                      onPressed: signIn, child: const Text("sign in"))
-                ],
-              )
+      body: Container(
+        /*decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFF758C), // top color of the gradient
+              Color(0xFFFF7EB3), // middle color of the gradient
+              Color(0xFFFF7EA0), // additional color of the gradient
+              Color(0xFFFF7DA0), // bottom color of the gradient
             ],
+          ),
+        ),*/
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80),
+          child: Center(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Text(
+                    "Travel With",
+
+                    style: TextStyle(
+                      fontSize: 52,
+                      fontFamily: "Playpen",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Image(
+                    image: AssetImage("assets/loginImage.png"),
+                    width: 250,
+                    height: 250,
+                  ),
+                ),
+                Column(
+                  children: [
+
+                    SizedBox(
+                      width: 300,
+                      height: 80,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Input ID',
+                          //fillColor: Colors.white,
+                          //filled: true,
+                        ),
+                        controller: _iDController,
+                        keyboardType: TextInputType.text,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      height: 80,
+                      child: TextField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'InputPassword',
+                          //fillColor: Colors.white,
+                          //filled: true,
+                        ),
+                        controller: _passwordController,
+                        keyboardType: TextInputType.text,
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: signUp, child: const Text("sign up")),
+                    ElevatedButton(
+                        onPressed: signIn, child: const Text("sign in"))
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
