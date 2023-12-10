@@ -8,6 +8,8 @@ import '/Controller/messageProvider/messageProviders.dart';
 import '/model/messages/MessagePreview.dart';
 import '/model/messages/Message.dart';
 
+import '/model/messages/MessageWrite.dart';
+
 
 class Chat extends ConsumerStatefulWidget {
   const Chat({super.key});
@@ -144,6 +146,11 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
       firstName: '나',
     );
 
+    ChatUser userYou = ChatUser(
+      id: widget.data.memberInfoDTO.email,
+      firstName: widget.data.memberInfoDTO.name,
+    );
+
 
     return Scaffold(
       appBar: PreferredSize(preferredSize: const Size.fromHeight(50), child: AppBar(
@@ -154,10 +161,23 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
         DashChat(
           currentUser: userMe,
           onSend: (ChatMessage m) {
+            messageSend(MessageWrite(
+              contents: m.text,
+              title: '',
+              receiverEmail: widget.data.memberInfoDTO.email,
+            ));
+            ref.read(messageDetailProvider.notifier).getMessageDetail(widget.data.memberInfoDTO.email, userMe, userYou);
           },
           messages: messageDetail,
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ref.read(messageDetailProvider.notifier).getMessageDetail(widget.data.memberInfoDTO.email, userMe, userYou);
+        },
+        child: Icon(Icons.refresh),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 }

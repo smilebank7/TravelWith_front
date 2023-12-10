@@ -7,6 +7,8 @@ import '/service/utils/dio_service.dart';
 import '/model/matchinginfo/NEW/MatchResponseDetail.dart';
 import '/model/messages/Message.dart';
 import '/model/messages/MessagePreview.dart';
+import '/model/messages/MessageWrite.dart';
+
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 
@@ -60,3 +62,15 @@ class messageDetailController extends StateNotifier<List<ChatMessage>> {
 }
 
 final messageDetailProvider = StateNotifierProvider<messageDetailController, List<ChatMessage>>((ref) => messageDetailController());
+
+void messageSend(MessageWrite data) async {
+  Dio _dio = DioServices().to();
+  final response = await _dio.post('/message/write', data: data.toJson());
+
+  if (response.statusCode == 200) {
+    print("성공해버린..");
+  }
+  else {
+    print("실패해버린..");
+  }
+}
