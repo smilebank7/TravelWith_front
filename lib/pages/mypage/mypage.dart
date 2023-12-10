@@ -148,9 +148,9 @@ class _InfoPanelState extends State<InfoPanel> {
 
   Widget setGenderIcon(String gender) {
     switch (gender) {
-      case "male":
+      case "MALE":
         return const Icon(Icons.male, size: 18, color: Colors.blue);
-      case "female":
+      case "FEMALE":
         return const Icon(Icons.female, size: 18, color: Colors.red);
       default:
         return const SizedBox();

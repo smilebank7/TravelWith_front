@@ -8,6 +8,9 @@ import '/model/matchinginfo/NEW/MatchResponseDetail.dart';
 import '/model/messages/Message.dart';
 import '/model/messages/MessagePreview.dart';
 
+import 'package:dash_chat_2/dash_chat_2.dart';
+
+
 class messageController extends StateNotifier<List<MessagePreview>> {
   messageController() : super([]);
 
@@ -30,10 +33,10 @@ class messageController extends StateNotifier<List<MessagePreview>> {
 
 final messageProvider = StateNotifierProvider<messageController, List<MessagePreview>>((ref) => messageController());
 
-class messageDetailController extends StateNotifier<List<Message>> {
+class messageDetailController extends StateNotifier<List<ChatMessage>> {
   messageDetailController() : super([]);
 
-  Future<void> getMessageDetail(String messageId) async {
+  Future<void> getMessageDetail(String messageId, ChatUser me, ChatUser you) async {
     Dio _dio = DioServices().to();
     final response = await _dio.get('/message/$messageId',);
 
@@ -42,7 +45,13 @@ class messageDetailController extends StateNotifier<List<Message>> {
       final List<dynamic> messageJson = response.data;
       List<Message> messageList =
       messageJson.map((item) => Message.fromJson(item)).toList();
-      state = messageList;
+
+      List<ChatMessage> chatMessageList = messageList.map((item) => ChatMessage(
+        text: item.contents,
+        user: item.senderEmail == me.id ? me : you,
+        createdAt: item.sendTime,
+      )).toList();
+      state = chatMessageList;
     }
     else {
       print("실패해버린..");
@@ -50,4 +59,4 @@ class messageDetailController extends StateNotifier<List<Message>> {
   }
 }
 
-final messageDetailProvider = StateNotifierProvider<messageDetailController, List<Message>>((ref) => messageDetailController());
+final messageDetailProvider = StateNotifierProvider<messageDetailController, List<ChatMessage>>((ref) => messageDetailController());
