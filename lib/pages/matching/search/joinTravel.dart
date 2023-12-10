@@ -85,12 +85,17 @@ class _JoinTravelState extends ConsumerState<JoinTravel>{
                                 SizedBox(width: 30)
                               ],
                             ),
-                            title: Text(
-                              widget.data.title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                                fontSize: 20,
+                            title: Container(
+                              width: 70,
+                              height: 40,
+                              child: Text(
+                                widget.data.title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  overflow: TextOverflow.fade,
+                                ),
                               ),
                             ),
                             subtitle: //add two text widget
@@ -99,6 +104,61 @@ class _JoinTravelState extends ConsumerState<JoinTravel>{
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    QuickAlert.show(
+                                      type: QuickAlertType.custom,
+                                      context: context,
+                                      title: '프로필',
+                                      widget: Container(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              child: CircleAvatar(
+                                                radius: 50,
+                                                backgroundImage: NetworkImage(widget.data.host.profileImg),
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  widget.data.host.name,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  widget.data.host.gender == 'MALE' ?
+                                                      Icons.male : Icons.female,
+                                                  color: widget.data.host.gender == 'MALE' ?
+                                                  Colors.blue : Colors.pink,
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text(
+                                              widget.data.host.email,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text(
+                                              widget.data.host.phoneNumber,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     widget.data.host.name,
@@ -218,7 +278,27 @@ class _JoinTravelState extends ConsumerState<JoinTravel>{
                                     color: widget.data.isDiningTogether == true ? Colors.pink : Colors.grey,
                                   )
                                 ],
-                              )
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      widget.data.startDate.toString().substring(0,10),
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      '~ ${widget.data.endDate.toString().substring(0,10)}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    )
+                                  ]
+                              ),
                             ],
                           ),
                         ),
@@ -251,26 +331,6 @@ class _JoinTravelState extends ConsumerState<JoinTravel>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //make row align center
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              widget.data.startDate.toString().substring(0,10),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              '~ ${widget.data.endDate.toString().substring(0,10)}',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            )
-                          ]
-                      ),
                       Container(
                         width: 120,
                         height: 30,

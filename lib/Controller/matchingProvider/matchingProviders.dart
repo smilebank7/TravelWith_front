@@ -97,7 +97,7 @@ class travelListController extends StateNotifier<List<MatchResponseDetail>>{
 
   }
 
-  Future<void> ConditionAPI(String? startDate, String? endDate, int money) async {
+  Future<void> ConditionAPI(String? startDate, String? endDate, int money, BuildContext context) async {
     Dio _dio = DioServices().to();
 
     final response = await _dio.get('/match-posting/search-condition',
@@ -111,6 +111,7 @@ class travelListController extends StateNotifier<List<MatchResponseDetail>>{
       final List<dynamic> travelListJson = response.data;
       List<MatchResponseDetail> travelList = travelListJson.map((item) => MatchResponseDetail.fromJson(item)).toList();
       state = travelList;
+      print('조건 검색 성공');
     }
     else {
       print("실패해버린..");

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '/Controller/matchingProvider/matchingProviders.dart';
 
 class ConditionSearch extends ConsumerStatefulWidget {
   const ConditionSearch({super.key});
@@ -81,9 +84,14 @@ class _ConditionSearchState extends ConsumerState<ConditionSearch> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // 검색 버튼을 눌렀을 때 검색 로직을 추가하세요.
-                // startDateController.text에 시작 날짜, endDateController.text에 종료 날짜,
-                // keywordController.text에 검색어, minAmount와 maxAmount에 금액 범위가 저장되어 있습니다.
+                ref.read(travelListProvider.notifier).ConditionAPI(
+                  startDateController.text,
+                  endDateController.text,
+                  maxAmount.toInt(),
+                  context,
+                );
+                context.pop();
+
               },
               child: Text('검색'),
             ),
