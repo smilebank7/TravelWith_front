@@ -123,12 +123,6 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
   @override
   void initState() {
     super.initState();
-    ref.read(messageDetailProvider.notifier).getMessageDetail(widget.data.memberInfoDTO.email);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final messageDetail = ref.watch(messageDetailProvider);
 
     ChatUser userMe = ChatUser(
       id: 'abc1234@test1.com',
@@ -139,24 +133,16 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
       id: widget.data.memberInfoDTO.email,
       firstName: widget.data.memberInfoDTO.name,
     );
+    ref.read(messageDetailProvider.notifier).getMessageDetail(widget.data.memberInfoDTO.email, userMe, userYou);
+  }
 
-    //make message list in time orderable
-    for (Message message in messageDetail) {
-      if(message.senderEmail == userMe.id) {
-        messages.add(ChatMessage(
-          text: message.contents,
-          user: userMe,
-          createdAt: message.sendTime,
-        ));
-      }
-      else if(message.senderEmail == userYou.id) {
-        messages.add(ChatMessage(
-          text: message.contents,
-          user: userYou,
-          createdAt: message.sendTime,
-        ));
-      }
-    }
+  @override
+  Widget build(BuildContext context) {
+    final messageDetail = ref.watch(messageDetailProvider);
+    ChatUser userMe = ChatUser(
+      id: 'abc1234@test1.com',
+      firstName: '나',
+    );
 
 
     return Scaffold(
@@ -169,7 +155,7 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
           currentUser: userMe,
           onSend: (ChatMessage m) {
           },
-          messages: messages,
+          messages: messageDetail,
         ),
       ),
     );
