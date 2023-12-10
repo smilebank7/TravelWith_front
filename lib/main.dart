@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:tripmating/pages/home/home.dart';
 
 
 import 'package:tripmating/pages/login/signup.dart';
+import 'package:tripmating/pages/naverMap/naver-api.dart';
 import 'pages/login/loginpage.dart';
 import 'pages/matching/create/postingpage.dart';
 
@@ -28,6 +30,8 @@ import 'package:tripmating/service/IntroduceWriteService.dart';
 import 'package:tripmating/service/LoginService.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
+  await initialize();
   runApp(ProviderScope(child: MyApp()));
 }
   // String email = "test1@naver.com";

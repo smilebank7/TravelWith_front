@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> _initialize() async {
+Future<void> initialize() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(
       clientId: dotenv.env['NAVER_CLIENT_ID'],//네이버 clientID,
@@ -39,6 +39,17 @@ class NaverMapApiPageState extends State<NaverMapApiPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF343945),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF86ed61), // top color of the gradient,
+        title: Text('NAVER MAP API'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(); // 현재 페이지를 스택에서 제거하여 뒤로 이동
+          },
+        ),
+
+      ),
       body: Center(
           child: SizedBox(
               width: mapSize.width,
@@ -96,6 +107,7 @@ void _showAddressDialog(BuildContext context, String address) {
         title: Text("도로명 주소"),
         content: Text(address),
         actions: <Widget>[
+
           ElevatedButton(
             child: Text("OK"),
             onPressed: () {
