@@ -48,6 +48,8 @@ dependencies:
   slide_countdown: ^1.4.0
   quickalert: ^1.0.2
   flutter_rating_bar: ^4.0.1
+  card_swiper : ^3.0.1
+  draggable_home: ^1.0.2
 
 
 
@@ -79,6 +81,7 @@ flutter:
   assets:
     - .env
     - assets/
+    - assets/images/
 
   fonts:
     - family: Playpen

@@ -77,17 +77,6 @@ final GoRouter _router = GoRouter(initialLocation: '/', routes: <RouteBase>[
         builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
           return SafeArea(
             child: Scaffold(
-                appBar: PreferredSize(preferredSize: const Size.fromHeight(50), child: AppBar(
-                  title: const Text(
-                    '트래블위드',
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white
-                    ),
-                  ),
-                  backgroundColor: Colors.pink,
-                )
-                ),
                 body: navigationShell,
                 bottomNavigationBar: BottomNavigationBar(
                     items: const<BottomNavigationBarItem>[
