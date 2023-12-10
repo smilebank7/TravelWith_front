@@ -142,11 +142,20 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
 
     //make message list in time orderable
     for (Message message in messageDetail) {
-      messages.add(ChatMessage(
-        text: message.contents,
-        user: userYou,
-        createdAt: message.sendTime,
-      ));
+      if(message.senderEmail == userMe.id) {
+        messages.add(ChatMessage(
+          text: message.contents,
+          user: userMe,
+          createdAt: message.sendTime,
+        ));
+      }
+      else if(message.senderEmail == userYou.id) {
+        messages.add(ChatMessage(
+          text: message.contents,
+          user: userYou,
+          createdAt: message.sendTime,
+        ));
+      }
     }
 
 
@@ -159,8 +168,6 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
         DashChat(
           currentUser: userMe,
           onSend: (ChatMessage m) {
-            setState(() {
-            });
           },
           messages: messages,
         ),
