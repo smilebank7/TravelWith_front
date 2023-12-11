@@ -88,10 +88,10 @@ final GoRouter _router = GoRouter(initialLocation: '/login', routes: <RouteBase>
                 body: navigationShell,
                 bottomNavigationBar: BottomNavigationBar(
                     items: const<BottomNavigationBarItem>[
-                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.house_fill), label: '홈'),
-                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), label: '매칭'),
-                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.person_alt), label: '마이페이지'),
-                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.chat_bubble_2_fill), label: '채팅'),
+                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.house_fill), label: 'Home'),
+                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), label: 'Matching'),
+                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.person_alt), label: 'MyPage'),
+                      BottomNavigationBarItem(icon: Icon(CupertinoIcons.chat_bubble_2_fill), label: 'Chatting'),
                     ],
                     backgroundColor: Colors.white,
                     selectedItemColor: Colors.pink,
