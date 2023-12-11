@@ -11,6 +11,12 @@ class LoginMemberController extends GetxController {
     this.email = email;
     update();
   }
+
+  void logout(){
+    this.email  = "";
+    update();
+
+  }
   // 이메일을 이용하여 친구 검색 메서드
 
   }

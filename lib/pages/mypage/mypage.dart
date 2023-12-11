@@ -8,6 +8,7 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:tripmating/Controller/AuthController/LoginController.dart';
 import 'package:tripmating/model/matchinginfo/Assessment.dart';
 
 import '../../Controller/myPageProvider/myPageProvider.dart';
@@ -16,23 +17,16 @@ import '/model/messages/MessagePreview.dart';
 import '/model/messages/Message.dart';
 
 import '/model/messages/MessageWrite.dart';
-
-
-
-
+import "package:tripmating/service/LoginService.dart";
 
 class Mypage extends ConsumerStatefulWidget {
   const Mypage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<Mypage> createState() => _MypageState();
-
-
 }
 
-
 class _MypageState extends ConsumerState<Mypage> {
-
   @override
   void initState() {
     super.initState();
@@ -43,17 +37,16 @@ class _MypageState extends ConsumerState<Mypage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView(
-        children:  [
+        children: [
           const InfoPanel(),
           const SizedBox(height: 20),
           const AssessmentPanel(),
           const SizedBox(height: 20),
           ElevatedButton(
               onPressed: () {
-                context.go("/login");
+                logout(context);
               },
-              child: const Text("Log out")
-          )
+              child: const Text("Log out"))
         ],
       ),
     );
@@ -65,7 +58,6 @@ class InfoPanel extends ConsumerStatefulWidget {
 
   @override
   _InfoPanelState createState() => _InfoPanelState();
-
 }
 
 class _InfoPanelState extends ConsumerState<InfoPanel> {
@@ -88,8 +80,7 @@ class _InfoPanelState extends ConsumerState<InfoPanel> {
 
     Widget genderIcon = setGenderIcon(gender);
 
-
-    var memberInfoDTO =  ref.watch(myPageProvider).memberInfoDTO;
+    var memberInfoDTO = ref.watch(myPageProvider).memberInfoDTO;
     print(memberInfoDTO);
 
     return Column(
@@ -121,12 +112,12 @@ class _InfoPanelState extends ConsumerState<InfoPanel> {
                     children: [
                       avatar,
                       const SizedBox(height: 10),
-                      Text(memberInfoDTO!.name!, style: TextStyle(
-                        fontSize: 27,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w400,
-                      )
-                      ),
+                      Text(memberInfoDTO!.name!,
+                          style: TextStyle(
+                            fontSize: 27,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w400,
+                          )),
                     ],
                   ),
                   const SizedBox(width: 40),
@@ -135,7 +126,7 @@ class _InfoPanelState extends ConsumerState<InfoPanel> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                       /* const Row(
+                        /* const Row(
                           children: [
                             Icon(Icons.star, size: 18),
                             SizedBox(width: 10),
@@ -152,12 +143,12 @@ class _InfoPanelState extends ConsumerState<InfoPanel> {
                           children: [
                             Icon(Icons.phone, size: 18),
                             SizedBox(width: 10),
-                            Text(memberInfoDTO.phoneNumber, style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w300,
-                            )
-                            ),
+                            Text(memberInfoDTO.phoneNumber,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w300,
+                                )),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -165,36 +156,26 @@ class _InfoPanelState extends ConsumerState<InfoPanel> {
                           children: [
                             const Icon(Icons.cake, size: 18),
                             const SizedBox(width: 10),
-                            Text(DateFormat('yyyy-MM-dd').format(memberInfoDTO.birthDate), style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w300,
-                            )
-                            ),
+                            Text(
+                                DateFormat('yyyy-MM-dd')
+                                    .format(memberInfoDTO.birthDate),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w300,
+                                )),
                             const SizedBox(width: 15),
                             genderIcon,
                           ],
                         ),
-
                       ],
-
-
-
-
-
-
-
-
                     ),
                   ),
-
-
                 ],
               ),
             ),
           ),
         ),
-
       ],
     );
   }
@@ -213,12 +194,14 @@ class _InfoPanelState extends ConsumerState<InfoPanel> {
 
 class AssessmentPanel extends ConsumerStatefulWidget {
   const AssessmentPanel({super.key});
+
   @override
   ConsumerState<AssessmentPanel> createState() => _AssessmentPanelState();
 }
 
 class _AssessmentPanelState extends ConsumerState<AssessmentPanel> {
   final pageController = PageController();
+
   @override
   void initState() {
     super.initState();
@@ -228,17 +211,18 @@ class _AssessmentPanelState extends ConsumerState<AssessmentPanel> {
 
   @override
   Widget build(BuildContext context) {
-    var memberInfoDTO =  ref.watch(myPageProvider);
+    var memberInfoDTO = ref.watch(myPageProvider);
     return Container(
       color: Color(0xFFF8F8F8),
       child: Column(
         children: [
-          const Text("MyIntroduce", style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'Pretendard',
-            fontWeight: FontWeight.w300,
-
-          ), textAlign: TextAlign.center),
+          const Text("MyIntroduce",
+              style: TextStyle(
+                fontSize: 30,
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w300,
+              ),
+              textAlign: TextAlign.center),
           const SizedBox(height: 15),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -275,28 +259,32 @@ class _AssessmentPanelState extends ConsumerState<AssessmentPanel> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(memberInfoDTO.myIntroduceTitle, style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w400,
-                          ),
+                          Text(
+                            memberInfoDTO.myIntroduceTitle,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                           SizedBox(height: 10),
                           Wrap(
                             alignment: WrapAlignment.center,
                             children: [
-                              Text("${memberInfoDTO.myIntroduceContents}", style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 24
+                              Text(
+                                "${memberInfoDTO.myIntroduceContents}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 24),
                               ),
-                              ),
-                              Icon(Icons.arrow_circle_right, color: Colors.pink, size: 25),
+                              Icon(Icons.arrow_circle_right,
+                                  color: Colors.pink, size: 25),
                             ],
                           ),
                           SizedBox(height: 1),
-                         /* Row(
+                          /* Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text("xxxx.xx.xx ~ xxxx.xx.xx", style: TextStyle(
@@ -334,8 +322,7 @@ class _AssessmentPanelState extends ConsumerState<AssessmentPanel> {
                   paintStyle: PaintingStyle.fill,
                   strokeWidth: 1.5,
                   dotColor: Colors.grey,
-                  activeDotColor: Colors.pink
-              ),
+                  activeDotColor: Colors.pink),
             ),
           ),
           const SizedBox(height: 10),
@@ -344,4 +331,3 @@ class _AssessmentPanelState extends ConsumerState<AssessmentPanel> {
     );
   }
 }
-
