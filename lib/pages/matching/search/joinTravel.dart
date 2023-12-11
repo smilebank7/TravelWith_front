@@ -348,7 +348,7 @@ class _JoinTravelState extends ConsumerState<JoinTravel>{
                             );
                             Navigator.of(context).pop();
                           },
-                          child: Text('Join Request'),
+                          child: Text('Join'),
 
                             style: ElevatedButton.styleFrom(
                               primary: Colors.pink,

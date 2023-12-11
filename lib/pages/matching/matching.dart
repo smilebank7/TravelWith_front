@@ -25,7 +25,7 @@ class _MatchingState extends ConsumerState<Matching>
   void initState() {
     super.initState();
     recentTabStateProvider = Provider<TabController>((ref) {
-      return TabController(length: 3, vsync: this);
+      return TabController(length: 2, vsync: this);
     });
   }
 
@@ -36,15 +36,6 @@ class _MatchingState extends ConsumerState<Matching>
       Tab(
         child: Text(
           'Trip List',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      Tab(
-        child: Text(
-          'Trip Progress',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -82,7 +73,6 @@ class _MatchingState extends ConsumerState<Matching>
         controller: controller,
         children: [
           TravelList(),
-          ProgressList(),
           PostingPage()
         ],
       ),
