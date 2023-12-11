@@ -2,10 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:tripmating/pages/mypage/memberassessment.dart';
 
-class Mypage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:tripmating/model/matchinginfo/Assessment.dart';
+
+import '../../Controller/myPageProvider/myPageProvider.dart';
+import '/Controller/messageProvider/messageProviders.dart';
+import '/model/messages/MessagePreview.dart';
+import '/model/messages/Message.dart';
+
+import '/model/messages/MessageWrite.dart';
+
+
+
+
+
+class Mypage extends ConsumerStatefulWidget {
   const Mypage({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<Mypage> createState() => _MypageState();
+
+
+}
+
+
+class _MypageState extends ConsumerState<Mypage> {
+
+  @override
+  void initState() {
+    super.initState();
+    var memberInfoDTO = ref.read(myPageProvider).memberInfoDTO;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +60,22 @@ class Mypage extends StatelessWidget {
   }
 }
 
-class InfoPanel extends StatefulWidget {
+class InfoPanel extends ConsumerStatefulWidget {
   const InfoPanel({super.key});
 
   @override
-  State<InfoPanel> createState() => _InfoPanelState();
+  _InfoPanelState createState() => _InfoPanelState();
+
 }
 
-class _InfoPanelState extends State<InfoPanel> {
+class _InfoPanelState extends ConsumerState<InfoPanel> {
   String gender = "male"; // 임시값
 
   @override
   void initState() {
     super.initState();
+    ref.read(myPageProvider.notifier).getMyPageDetail();
+    print("222222222");
   }
 
   @override
@@ -54,95 +89,113 @@ class _InfoPanelState extends State<InfoPanel> {
     Widget genderIcon = setGenderIcon(gender);
 
 
+    var memberInfoDTO =  ref.watch(myPageProvider).memberInfoDTO;
+    print(memberInfoDTO);
 
-    return Container(
-      color: Color(0xFFF8F8F8),
-      child: Center(
-        child: Container(
-          width: 385,
-          margin: const EdgeInsets.only(top: 15.0, bottom: 20.0),
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 6,
-                offset: Offset(0, 3),
-              ),
-            ],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  avatar,
-                  const SizedBox(height: 10),
-                  const Text("name", style: TextStyle(
-                    fontSize: 27,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                  )
+    return Column(
+      children: [
+        Container(
+          color: Color(0xFFF8F8F8),
+          child: Center(
+            child: Container(
+              width: 385,
+              margin: const EdgeInsets.only(top: 15.0, bottom: 20.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
                   ),
                 ],
+                borderRadius: BorderRadius.circular(10),
               ),
-              const SizedBox(width: 40),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Row(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      avatar,
+                      const SizedBox(height: 10),
+                      Text(memberInfoDTO!.name!, style: TextStyle(
+                        fontSize: 27,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w400,
+                      )
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 40),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.star, size: 18),
-                        SizedBox(width: 10),
-                        Text("4.5/5", style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w300,
-                        )
+                       /* const Row(
+                          children: [
+                            Icon(Icons.star, size: 18),
+                            SizedBox(width: 10),
+                            Text("4.5/5", style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w300,
+                            )
+                            ),
+                          ],
+                        ),*/
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(Icons.phone, size: 18),
+                            SizedBox(width: 10),
+                            Text(memberInfoDTO.phoneNumber, style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w300,
+                            )
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const Row(
-                      children: [
-                        Icon(Icons.phone, size: 18),
-                        SizedBox(width: 10),
-                        Text("010-1234-5678", style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w300,
-                        )
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            const Icon(Icons.cake, size: 18),
+                            const SizedBox(width: 10),
+                            Text(DateFormat('yyyy-MM-dd').format(memberInfoDTO.birthDate), style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w300,
+                            )
+                            ),
+                            const SizedBox(width: 15),
+                            genderIcon,
+                          ],
                         ),
+
                       ],
+
+
+
+
+
+
+
+
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        const Icon(Icons.cake, size: 18),
-                        const SizedBox(width: 10),
-                        const Text("birthday", style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w300,
-                        )
-                        ),
-                        const SizedBox(width: 15),
-                        genderIcon,
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+
+
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+
+      ],
     );
   }
 
@@ -158,23 +211,29 @@ class _InfoPanelState extends State<InfoPanel> {
   }
 }
 
-class AssessmentPanel extends StatefulWidget {
+class AssessmentPanel extends ConsumerStatefulWidget {
   const AssessmentPanel({super.key});
-
   @override
-  State<AssessmentPanel> createState() => _AssessmentPanelState();
+  ConsumerState<AssessmentPanel> createState() => _AssessmentPanelState();
 }
 
-class _AssessmentPanelState extends State<AssessmentPanel> {
+class _AssessmentPanelState extends ConsumerState<AssessmentPanel> {
   final pageController = PageController();
+  @override
+  void initState() {
+    super.initState();
+    ref.read(myPageProvider.notifier).getMyPageDetail();
+    print("222222222");
+  }
 
   @override
   Widget build(BuildContext context) {
+    var memberInfoDTO =  ref.watch(myPageProvider);
     return Container(
       color: Color(0xFFF8F8F8),
       child: Column(
         children: [
-          const Text("지난 여행 멤버 평가", style: TextStyle(
+          const Text("MyIntroduce", style: TextStyle(
             fontSize: 30,
             fontFamily: 'Pretendard',
             fontWeight: FontWeight.w300,
@@ -208,52 +267,54 @@ class _AssessmentPanelState extends State<AssessmentPanel> {
               ),
               child: PageView.builder(
                 controller: pageController,
-                itemCount: 3, // 값 필요
+                itemCount: 1, // 값 필요
                 itemBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("파티장 이름", style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w400,
-                        ),
-                        ),
-                        SizedBox(height: 1),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("여행 제목  ", style: TextStyle(
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(memberInfoDTO.myIntroduceTitle, style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w400,
+                          ),
+                          ),
+                          SizedBox(height: 10),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Text("${memberInfoDTO.myIntroduceContents}", style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 24
+                              ),
+                              ),
+                              Icon(Icons.arrow_circle_right, color: Colors.pink, size: 25),
+                            ],
+                          ),
+                          SizedBox(height: 1),
+                         /* Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("xxxx.xx.xx ~ xxxx.xx.xx", style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w400,
-                                fontSize: 24
-                            ),
-                            ),
-                            Icon(Icons.arrow_circle_right, color: Colors.pink, size: 25),
-                          ],
-                        ),
-                        SizedBox(height: 1),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("xxxx.xx.xx ~ xxxx.xx.xx", style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                            ),
-                            ),
-                            Text("총 인원 n", style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                            ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              ),
+                              ),
+                              Text("총 인원 n", style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w400,
+                              ),
+                              ),
+                            ],
+                          ),*/
+                        ],
+                      ),
                     ),
                   );
                 },

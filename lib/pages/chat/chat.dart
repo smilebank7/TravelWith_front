@@ -23,6 +23,7 @@ class _ChatState extends ConsumerState<Chat> {
   void initState() {
     super.initState();
     ref.read(messageProvider.notifier).getMessageList();
+
   }
 
   @override
