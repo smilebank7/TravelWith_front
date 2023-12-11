@@ -28,7 +28,17 @@ class MemberInfoDTO {
       gender: json['gender'],
     );
   }
-
+  factory MemberInfoDTO.empty() {
+    return MemberInfoDTO(
+      id: 0, // Default value for int
+      name: '',
+      email: '',
+      phoneNumber: '',
+      profileImg: '',
+      birthDate: DateTime(1900, 1, 1), // An arbitrary default date, change as needed
+      gender: '',
+    );
+  }
   // Add a toJson method if you need to convert MemberInfoDTO instances back to a JSON map.
   Map<String, dynamic> toJson() {
     return {

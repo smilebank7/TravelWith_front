@@ -27,6 +27,13 @@ class MyPageDTO {
     };
   }
 
+  factory MyPageDTO.empty() {
+    return MyPageDTO(
+      memberInfoDTO: MemberInfoDTO.empty(), // Assuming MemberInfoDTO also has an empty constructor
+      myIntroduceTitle: '',
+      myIntroduceContents: '',
+    );
+  }
   @override
   String toString() {
     return 'MyPageDTO{memberInfoDTO: $memberInfoDTO, myIntroduceTitle: $myIntroduceTitle, myIntroduceContents: $myIntroduceContents}';
