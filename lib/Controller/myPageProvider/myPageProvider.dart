@@ -29,5 +29,5 @@ class myPageController extends StateNotifier<MyPageDTO> {
   }
 }
 
-final myPageProvider = StateNotifierProvider<myPageController, MyPageDTO>(
+final myPageProvider = StateNotifierProvider.autoDispose<myPageController, MyPageDTO>(
     (ref) => myPageController());

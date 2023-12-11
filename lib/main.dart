@@ -174,8 +174,10 @@ final GoRouter _router = GoRouter(initialLocation: '/login', routes: <RouteBase>
     ]
 );
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   // This widget is the root of your application.
   @override

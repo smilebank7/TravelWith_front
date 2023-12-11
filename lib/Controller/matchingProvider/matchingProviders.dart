@@ -121,7 +121,7 @@ class travelListController extends StateNotifier<List<MatchResponseDetail>>{
 }
 
 //여기 있는 프로바이더로 나중에 api를 불러오고 상태를 감시 가능합니다.
-final travelListProvider = StateNotifierProvider<travelListController, List<MatchResponseDetail>>((ref) {
+final travelListProvider = StateNotifierProvider.autoDispose<travelListController, List<MatchResponseDetail>>((ref) {
   return travelListController();
 });
 
@@ -149,7 +149,7 @@ class progressListController extends StateNotifier<List<MatchResponseDetail>>{
 
 }
 
-final progressListProvider = StateNotifierProvider<progressListController, List<MatchResponseDetail>>((ref) {
+final progressListProvider = StateNotifierProvider.autoDispose<progressListController, List<MatchResponseDetail>>((ref) {
   return progressListController();
 });
 

@@ -61,7 +61,7 @@ class messageDetailController extends StateNotifier<List<ChatMessage>> {
   }
 }
 
-final messageDetailProvider = StateNotifierProvider<messageDetailController, List<ChatMessage>>((ref) => messageDetailController());
+final messageDetailProvider = StateNotifierProvider.autoDispose<messageDetailController, List<ChatMessage>>((ref) => messageDetailController());
 
 void messageSend(MessageWrite data) async {
   Dio _dio = DioServices().to();
