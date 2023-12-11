@@ -35,4 +35,5 @@ lib/pages/naverMap/naver-api.dart
 ios
 android
 test
+build
 ```
