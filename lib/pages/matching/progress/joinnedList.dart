@@ -24,29 +24,27 @@ class _ProgressListState extends ConsumerState<ProgressList> {
   @override
   Widget build(BuildContext context) {
     final progressListState = ref.watch(progressListProvider);
-    return Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
-            alignment: Alignment.centerLeft,
-            child: Column(
-                children: [
-                  Container(
-                    height: 500,
-                    child: ListView.builder(
-                      itemCount: progressListState.length,
-                      itemBuilder: (content, index) {
-                        MatchResponseDetail travelData = progressListState[index];
-                        return TravelCard(
-                          data: travelData,
-                        );
-                      },
-                    ),
-                  ),
-                ]
-            ),
-          ),
-        ]
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
+        alignment: Alignment.centerLeft,
+        child: Column(
+            children: [
+              Container(
+                height: 500,
+                child: ListView.builder(
+                  itemCount: progressListState.length,
+                  itemBuilder: (content, index) {
+                    MatchResponseDetail travelData = progressListState[index];
+                    return TravelCard(
+                      data: travelData,
+                    );
+                  },
+                ),
+              ),
+            ]
+        ),
+      ),
     );
   }
 }

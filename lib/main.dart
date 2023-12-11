@@ -66,7 +66,7 @@ void main() async {
   //
   // //await LoginService.logout();
 
-final GoRouter _router = GoRouter(initialLocation: '/', routes: <RouteBase>[
+final GoRouter _router = GoRouter(initialLocation: '/login', routes: <RouteBase>[
   GoRoute(
     path: '/login',
     builder: (context, state) {
