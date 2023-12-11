@@ -159,19 +159,8 @@ Future<void> joinAPI(int id, BuildContext context) async {
   final response = await _dio.post('/match-posting/join/$id',
   );
   if (response.statusCode == 200) {
-    QuickAlert.show(
-      context: context,
-      title: '참여 완료',
-      type: QuickAlertType.success,
-      confirmBtnColor: Colors.pink,
-    );
+
   }
   else {
-    QuickAlert.show(
-      context: context,
-      title: '참여 실패',
-      type: QuickAlertType.error,
-      confirmBtnColor: Colors.pink,
-    );
   }
 }

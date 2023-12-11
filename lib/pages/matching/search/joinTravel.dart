@@ -8,6 +8,8 @@ import '/Controller/matchingProvider/matchingProviders.dart';
 
 import 'package:quickalert/quickalert.dart';
 
+import 'package:go_router/go_router.dart';
+
 
 class JoinTravel extends ConsumerStatefulWidget{
   final MatchResponseDetail data;
@@ -344,9 +346,10 @@ class _JoinTravelState extends ConsumerState<JoinTravel>{
                               confirmBtnColor: Colors.pink,
                               onConfirmBtnTap: () {
                                 joinAPI(widget.data.matchId, context);
+                                context.pop();
                               }
                             );
-                            Navigator.of(context).pop();
+
                           },
                           child: Text('Join'),
 
