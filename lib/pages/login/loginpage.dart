@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tripmating/model/login-model/LoginDTO.dart';
 import 'package:tripmating/service/LoginService.dart';
 
+import '/Controller/AuthController/LoginController.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -34,7 +36,7 @@ class _LoginPanelState extends State<LoginPanel> {
     context.go("/login/signup");
   }
 
-  void signIn() async {
+  /*void signIn() async {
     int statusCode = await LoginService.login(LoginDTO(
       email: _iDController.text,
       password: _passwordController.text,
@@ -47,7 +49,7 @@ class _LoginPanelState extends State<LoginPanel> {
     print("sing In");
     print(_iDController.text);
     print(_passwordController.text);
-  }
+  }*/
 
   //자판 열면 위로 밀려나게 구현, 참고: https://cishome.tistory.com/114
   //preferred size size:에 뭐 넣어야 되는지 찾아보기
@@ -117,7 +119,7 @@ class _LoginPanelState extends State<LoginPanel> {
                       ElevatedButton(
                           onPressed: signUp, child: const Text("sign up")),
                       ElevatedButton(
-                          onPressed: signIn, child: const Text("sign in"))
+                          onPressed: (){login2(_iDController.text,_passwordController.text,context);}, child: const Text("sign in"))
                     ],
                   )
                 ],

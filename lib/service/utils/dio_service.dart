@@ -2,26 +2,37 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '/Controller/authController/LoginController.dart';
 
 class DioServices {
   static final DioServices _dioServices = DioServices._internal();
+  static String _email = '';
+
   factory DioServices() => _dioServices;
   Map<String, dynamic> dioInformation= {};
 
   static Dio _dio = Dio();
+
+  static void setEmail(String email) {
+    _email = email;
+  }
+
+  static String getEmail() {
+    return _email;
+  }
 
   DioServices._internal() {
     _initializeDio(); // 비동기 메서드 호출을 위한 초기화 메서드 호출
   }
 
   Future<void> _initializeDio() async {
-    /*print('\ndio실행이 시작됐습니다\n');
-    storedToken = await _keyBox.getToken();
-    print('토큰 저장이 성공했습니다: $storedToken');*/
+
     BaseOptions _options = BaseOptions(
       baseUrl: 'http://111.118.50.208:12345',
       headers: {
-        'email': 'abc1234@test1.com',
+        'email': _email,
       },
     );
 

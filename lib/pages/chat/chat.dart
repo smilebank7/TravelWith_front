@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tripmating/service/utils/dio_service.dart';
 
 
 import '/Controller/messageProvider/messageProviders.dart';
@@ -127,7 +128,7 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
     super.initState();
 
     ChatUser userMe = ChatUser(
-      id: 'abc1234@test1.com',
+      id: DioServices.getEmail(),
       firstName: '나',
     );
 
